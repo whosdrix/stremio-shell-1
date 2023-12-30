@@ -1,1 +1,0 @@
-https://dl.strem.io/server/v4.20.3/desktop/server.js

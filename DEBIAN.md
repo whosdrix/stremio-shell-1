@@ -1,14 +1,14 @@
 # Build Stremio for Debian GNU/Linux
 
-These instructions have been tested in Debian Bookworm 12 (Stable)
+These instructions have been tested in Debian Buster (Testing)
 
 ## 1. Start by cloning the GIT repository:
 
-``git clone --recurse-submodules -j8 https://github.com/Stremio/stremio-shell.git``
+``git clone --recurse-submodules -j8 git://github.com/Stremio/stremio-shell.git``
 
 ## 2. Install QTCreator
 
-``sudo apt-get install qtcreator qt5-qmake g++ pkgconf libssl-dev``
+``sudo apt-get install qtcreator qt5-qmake qt5-default g++ pkgconf libssl-dev``
 
 ## 3. Generate the Makefiles for Stremio
 
@@ -93,4 +93,4 @@ Error while starting streaming server. Please consider re-installing Stremio fro
 
 Perhaps you've skipped step #5
 
-Cheers! 
+Cheers!

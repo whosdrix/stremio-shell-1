@@ -27,14 +27,14 @@ ApplicationWindow {
 
     property bool quitting: false
 
-    color: "#0c0b11";
+    color: "#201f32";
     title: appTitle
 
     property var previousVisibility: Window.Windowed
     property bool wasFullScreen: false
 
     function setFullScreen(fullscreen) {
-        if (fullscreen) {
+        if(fullscreen) {
             root.visibility = Window.FullScreen;
             root.wasFullScreen = true;
         } else {
@@ -44,7 +44,7 @@ ApplicationWindow {
     }
 
     function showWindow() {
-            if (root.wasFullScreen) {
+            if(root.wasFullScreen) {
                 root.visibility = Window.FullScreen;
             } else {
                 root.visibility = root.previousVisibility;
@@ -54,7 +54,7 @@ ApplicationWindow {
     }
 
     function updatePreviousVisibility() {
-        if (root.visible && root.visibility != Window.FullScreen && root.visibility != Window.Minimized) {
+        if(root.visible && root.visibility != Window.FullScreen && root.visibility != Window.Minimized) {
             root.previousVisibility = root.visibility;
         }
     }
@@ -72,12 +72,7 @@ ApplicationWindow {
             if (ev === "quit") quitApp()
             if (ev === "app-ready") transport.flushQueue()
             if (ev === "mpv-command" && args && args[0] !== "run") mpv.command(args)
-            if (ev === "mpv-set-prop") {
-                mpv.setProperty(args[0], args[1]);
-                if (args[0] === "pause") {
-                    shouldDisableScreensaver(!args[1]);
-                }
-            }
+            if (ev === "mpv-set-prop") mpv.setProperty(args[0], args[1])
             if (ev === "mpv-observe-prop") mpv.observeProperty(args)
             if (ev === "control-event") wakeupEvent()
             if (ev === "wakeup") wakeupEvent()
@@ -87,7 +82,7 @@ ApplicationWindow {
                 showWindow();
             }
             if (ev === "win-set-visibility") {
-                if (args.hasOwnProperty('fullscreen')) {
+                if(args.hasOwnProperty('fullscreen')) {
                     setFullScreen(args.fullscreen);
                 }
             }
@@ -98,7 +93,7 @@ ApplicationWindow {
             if (ev === "screensaver-toggle") shouldDisableScreensaver(args.disabled)
             if (ev === "file-close") fileDialog.close()
             if (ev === "file-open") {
-              if (typeof args !== "undefined") {
+              if(typeof args !== "undefined") {
                 var fileDialogDefaults = {
                   title: "Please choose",
                   selectExisting: true,
@@ -194,7 +189,7 @@ ApplicationWindow {
 
         function onSignalAlwaysOnTop() {
             root.raise()
-            if (root.flags & Qt.WindowStaysOnTopHint) {
+            if(root.flags & Qt.WindowStaysOnTopHint) {
                 root.flags &= ~Qt.WindowStaysOnTopHint;
             } else {
                 root.flags |= Qt.WindowStaysOnTopHint;
@@ -237,7 +232,7 @@ ApplicationWindow {
     Process {
         id: streamingServer
         property string errMessage:
-            "Error while starting streaming server. Please try to restart stremio. If it happens again please contact the Stremio support team for assistance"
+            "Error while starting streaming server. Please consider re-installing Stremio from https://www.stremio.com"
         property int errors: 0
         property bool fastReload: false
 
@@ -500,7 +495,7 @@ ApplicationWindow {
         onContextMenuRequested: function(request) {
             request.accepted = true;
             // Allow menu inside editalbe objects
-            if (request.isContentEditable) {
+            if(request.isContentEditable) {
                 ctxMenu.popup();
             }
         }
@@ -530,7 +525,7 @@ ApplicationWindow {
     //
     Rectangle {
         id: splashScreen;
-        color: "#0c0b11";
+        color: "#1B1126";
         anchors.fill: parent;
         Image {
             id: splashLogo
@@ -614,7 +609,7 @@ ApplicationWindow {
     onVisibilityChanged: {
         var enabledAlwaysOnTop = root.visible && root.visibility != Window.FullScreen;
         systemTray.alwaysOnTopEnabled(enabledAlwaysOnTop);
-        if (!enabledAlwaysOnTop) {
+        if(!enabledAlwaysOnTop) {
             root.flags &= ~Qt.WindowStaysOnTopHint;
         }
 
