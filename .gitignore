@@ -7,7 +7,7 @@
 *.lai
 *.so
 ./*.dll
-*.dylib
+./*.dylib
 *.deb
 *.rpm
 
@@ -56,3 +56,4 @@ icons
 server.js
 Stremio*.exe
 
+rcedit-x86.exe
