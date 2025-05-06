@@ -34,23 +34,16 @@ ApplicationWindow {
     property bool wasFullScreen: false
 
     function setFullScreen(fullscreen) {
-        if(fullscreen) {
-            root.visibility = Window.FullScreen;
-            root.wasFullScreen = true;
-        } else {
-            root.visibility = root.previousVisibility;
-            root.wasFullScreen = false;
-        }
+        // In kiosk mode, we always force fullscreen regardless of the parameter
+        root.visibility = Window.FullScreen;
+        root.wasFullScreen = true;
     }
 
     function showWindow() {
-            if(root.wasFullScreen) {
-                root.visibility = Window.FullScreen;
-            } else {
-                root.visibility = root.previousVisibility;
-            }
-            root.raise();
-            root.requestActivate();
+        // Always show in fullscreen for kiosk mode
+        root.visibility = Window.FullScreen;
+        root.raise();
+        root.requestActivate();
     }
 
     function updatePreviousVisibility() {
@@ -632,8 +625,10 @@ ApplicationWindow {
     }
 
     onClosing: function(event){
+        // Prevent closing in kiosk mode
         event.accepted = false
-        root.hide()
+        // Keep window visible and in fullscreen
+        root.visibility = Window.FullScreen
     }
 
     //
@@ -665,10 +660,13 @@ ApplicationWindow {
     Component.onCompleted: function() {
         console.log('Stremio Shell version: '+Qt.application.version)
 
-        // Kind of hacky way to ensure there are no Qt bindings going on; otherwise when we go to fullscreen
-        // Qt tries to restore original window size
-        root.height = root.initialHeight
-        root.width = root.initialWidth
+        // Force fullscreen mode on startup and disable window decorations
+        root.flags = Qt.FramelessWindowHint;
+        root.visibility = Window.FullScreen;
+        
+        // Set the size to match screen dimensions for fullscreen
+        root.height = Screen.height
+        root.width = Screen.width
 
         // Start streaming server
         var args = Qt.application.arguments

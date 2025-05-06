@@ -108,6 +108,18 @@ int main(int argc, char **argv)
 
     engine->load(QUrl(QStringLiteral("qrc:/main.qml")));
 
+    // Set the window to frameless fullscreen kiosk mode
+    auto rootObjects = engine->rootObjects();
+    if (!rootObjects.isEmpty()) {
+        QQuickWindow *window = qobject_cast<QQuickWindow*>(rootObjects.first());
+        if (window) {
+            // Remove title bar and window controls for kiosk mode
+            window->setFlags(Qt::FramelessWindowHint);
+            // Force fullscreen mode
+            window->showFullScreen();
+        }
+    }
+
     #ifndef Q_OS_MACOS
     QObject::connect( &app, &SingleApplication::receivedMessage, &app, &MainApp::processMessage );
     #endif
